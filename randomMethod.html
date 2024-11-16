@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container">
+        <h2>Login Form</h2>
+        <label for="mobilenum">Mobile:</label>
+        <input type="number" id="mobilenum" required min="1000000000">
+        <label for="otp">OTP:</label>
+        <input type="number" id="otp" required min="1000" max="99999" placeholder="Enter OTP">
+        <button id="verify-btn">SEND OTP</button>
+        <button id="retry"><i class="fa-solid fa-arrows-rotate"></i></button>
+    </div>
+
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        width: 100%;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(96, 92, 92);
+    }
+    .container {
+        width: 300px;
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 10px;
+        border: 2px solid rgb(255, 255, 255);
+        border-radius: 10px;
+        background-color: aliceblue;
+        box-shadow: 0 3px 4px rgb(23, 22, 22);
+    }
+    #mobilenum, #otp {
+        width: 280px;
+        height: 30px;
+        border-radius: 7px;
+        outline: none;
+        margin-top: 10px;
+        border: 0;
+    }
+    #verify-btn {
+        padding: 10px;
+        margin-top: 10px;
+        width: 285px;
+        font-weight: 700;
+        border-radius: 10px;
+        background-color: rgb(13, 0, 36);
+        color: white;
+        cursor: pointer;
+        outline: none;
+        border: none;
+        opacity: 0.8;
+    }
+    #verify-btn:hover{
+        opacity: 1.0;
+    }
+    label {
+        margin-top: 10px;
+        font-weight: 600;
+    }
+    #retry {
+        margin-top: 5px;
+        outline: none;
+        border: none;
+        padding: 10px;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: 0 0 1px;
+        cursor: pointer;
+        transition: transform 0.5s ease-in-out;
+    }
+    #retry:hover {
+        transform: rotate(360deg);
+    }
+    @media (max-width: 600px) {
+        .container {
+            width: 90%;   
+            height: auto; 
+        }
+        #mobilenum, #otp {
+            width: 100%;  
+        }
+        #verify-btn {
+            width: 100%;  
+        }
+        label {
+            font-size: 14px; 
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            width: 70%;   
+        }
+        #mobilenum, #otp {
+            width: 95%;   
+        }
+        #verify-btn {
+            width: 95%;   
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .container {
+            width: 350px;  
+        }
+        #mobilenum, #otp {
+            width: 95%;   
+        }
+        #verify-btn {
+            width: 95%;   
+        }
+    }
+
+</style>
+
+
+    <script>
+        let verifyBtn = document.getElementById("verify-btn");
+        let mobileNumInput = document.getElementById("mobilenum");
+        let otpInput = document.getElementById("otp");
+        let generatedOtp;
+        let retry = document.getElementById("retry");
+
+        verifyBtn.addEventListener('click', function () {
+            let mobileNum = mobileNumInput.value;
+
+            if (!mobileNum || mobileNum.length !== 10) {
+                alert("Please enter a valid 10-digit mobile number.");
+                return;
+            }
+
+            generatedOtp = Math.floor(Math.random() * 10000) + 1000; 
+            alert("OTP Sent Successfully: " + generatedOtp); 
+
+            verifyBtn.innerText = "VERIFY OTP";
+            verifyBtn.removeEventListener('click', arguments.callee); 
+            verifyBtn.addEventListener('click', verifyOtp);
+        });
+
+        function verifyOtp() {
+            let enteredOtp = otpInput.value;
+
+            if (!enteredOtp || enteredOtp.length < 4) {
+                alert("Please enter a valid OTP.");
+                return;
+            }
+
+            if (enteredOtp == generatedOtp) {
+                alert("Successfully Verified!");
+                resetForm();
+            } else {
+                alert("OTP mismatch. Please try again.");
+                otpInput.value = ""; 
+            }
+        }
+
+        retry.addEventListener("click", () => {
+            resetForm();
+        });
+
+        function resetForm() {
+            mobileNumInput.value = ""; 
+            otpInput.value = ""; 
+            verifyBtn.innerText = "SEND OTP";
+            verifyBtn.removeEventListener('click', verifyOtp);
+            verifyBtn.addEventListener('click', function () {
+                let mobileNum = mobileNumInput.value;
+
+                if (!mobileNum || mobileNum.length !== 10) {
+                    alert("Please enter a valid 10-digit mobile number.");
+                    return;
+                }
+
+                generatedOtp = Math.floor(Math.random() * 10000) + 1000; 
+                alert("OTP Sent Successfully: " + generatedOtp); 
+
+                verifyBtn.innerText = "VERIFY OTP";
+                verifyBtn.removeEventListener('click', arguments.callee); 
+                verifyBtn.addEventListener('click', verifyOtp);
+            });
+        }
+    </script>
+</body>
+</html>
